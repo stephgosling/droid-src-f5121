@@ -1,0 +1,3 @@
+[submodule "dhs"]
+	path = dhs
+	url = https://github.com/mer-hybris/droid-hal-source

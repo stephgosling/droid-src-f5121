@@ -1,0 +1,26 @@
+# Copy this file to your device tree, next to the .spec and dhs submodule
+# Replace @...@ accordingly
+
+# device is the codename for the device
+%define device suzu
+
+%define ha_device_override f5121
+
+%include define-trees
+
+%define device_variant -userdebug
+%define lunch_device aosp_f5121
+%define pre_actions sudo update-java-alternatives -s java-1.7.0-openjdk-amd64
+
+# Our promotions fail, because rpm v4.9 can't handle conditional macros well, see JB#33275
+# Let's work around it for now:
+%define dhs_name_hardcoded droid-src-%{ha_device_override}
+# If dhs_flavour is set to e.g. syspart, then the hardcoded name should be:
+#define dhs_name_hardcoded droid-src-syspart-%{ha_device_override}
+
+%define dhs_sources \
+Source52: %{dhs_name_hardcoded}.spec.tmpl\
+%{nil}
+
+%include dhs/droid-hal-source.inc
+
