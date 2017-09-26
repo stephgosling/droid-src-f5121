@@ -16,6 +16,7 @@
 %define device_variant -userdebug
 %define lunch_device aosp_f5121
 %define pre_actions sudo update-java-alternatives -s java-1.7.0-openjdk-amd64
+%define have_vendor_src_for_obs 1
 
 # Our promotions fail, because rpm v4.9 can't handle conditional macros well, see JB#33275
 # Let's work around it for now:
@@ -36,6 +37,8 @@ Source52: %{dhs_name_hardcoded}.spec.tmpl\
 # device_variant:    for AOSP this is used as the TARGET_BUILD_VARIANT for lunch
 # lunch_device:      cases where the lunch combo is different from device name.
 #                      For example, it's "aosp_f5121" for the "suzu" device
+# have_vendor_src_for_obs:
+#                    include a separately packaged vendor source for OBS builds
 
 %define __provides_exclude_from ^%{_libexecdir}/droid-hybris/.*$
 %define android_root .
@@ -117,6 +120,12 @@ Group:		System
 
 # droid-src does not build any binaries, just bundles sources
 BuildArch:      noarch
+
+%if 0%{?_obs_build_project:1}
+%if 0%{?have_vendor_src_for_obs:1}
+BuildRequires:  droid-system-vendor-obsbuild
+%endif
+%endif
 
 # Ignore the rpmlint-* to avoid long RPMLINT reporting
 #!BuildIgnore: rpmlint-mini
@@ -403,6 +412,11 @@ tar xf %{SOURCE0} -C ../SOURCES
 # Clean up the rpm tarball too
 rm -f %{SOURCE0}
 cp %{SOURCE40} %{SOURCE0}
+
+%if 0%{?have_vendor_src_for_obs:1}
+# Copy SW binaries to the build dir (provided by droid-system-vendor-obsbuild)
+cp -ar /vendor .
+%endif
 
 # In OBS the repo service leaves the rpm/* files for OBS and they just ^^
 # got unpacked to ../SOURCES ... but we're used to having an rpm/ dir
