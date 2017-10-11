@@ -2,14 +2,14 @@
 # Replace @...@ accordingly
 
 # device is the codename for the device
-%define device suzu
+%define device kugo
 
-%define ha_device_override f5121
+%define ha_device_override f5321
 
 %include define-trees
 
 %define device_variant -userdebug
-%define lunch_device aosp_f5121
+%define lunch_device aosp_f3121
 %define pre_actions sudo update-java-alternatives -s java-1.7.0-openjdk-amd64
 
 # Our promotions fail, because rpm v4.9 can't handle conditional macros well, see JB#33275

@@ -6,15 +6,15 @@
 # Replace @...@ accordingly
 
 # device is the codename for the device
-%define device suzu
+%define device kugo
 
-%define ha_device_override f5121
+%define ha_device_override f5321
 
 # repo service performed : %%include define-trees
 %define dhs_trees abi bionic bootable build device external frameworks hardware libcore libnativehelper kernel prebuilts/clang/linux-x86 prebuilts/gcc/linux-x86 prebuilts/misc prebuilts/ndk prebuilts/sdk prebuilts/tools system vendor
 
 %define device_variant -userdebug
-%define lunch_device aosp_f5121
+%define lunch_device aosp_f5321
 %define pre_actions sudo update-java-alternatives -s java-1.7.0-openjdk-amd64
 
 # Our promotions fail, because rpm v4.9 can't handle conditional macros well, see JB#33275
